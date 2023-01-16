@@ -25,6 +25,9 @@ int ex(nodeType *p)
         case WHILE:
             printf("L%03d:\n", lbl1 = lbl++);
             ex(p->opr.op[0]);
+            
+            // Replace with jnz?
+
             printf("\tjz\tL%03d\n", lbl2 = lbl++);
             ex(p->opr.op[1]);
             printf("\tjmp\tL%03d\n", lbl1);
@@ -52,15 +55,25 @@ int ex(nodeType *p)
             break;
         case PRINT:
             ex(p->opr.op[0]);
-            index[0] = p->opr.op[0]->id.i;
-            printf("\tlea r8, [rip+ARRAY]\n");
-            if (index[0] != 0)
+            if (p->opr.op[0]->type == typeCon)
             {
-                printf("\tadd r8, 8*%d\n", index[0]);
+                printf("\tpop rsi\n");
+            }
+            else
+            {
+                index[0] = p->opr.op[0]->id.i;
+                printf("\tlea r8, [rip+ARRAY]\n");
+                if (index[0] != 0)
+                {
+                    printf("\tadd r8, 8*%d\n", index[0]);
+                }
             }
             printf("\tpush rbp\n");
             printf("\tlea rdi, [rip+fmt_str]\n");
-            printf("\tmov rsi, [r8]\n");
+            if (p->opr.op[0]->type != typeCon)
+            {
+                printf("\tmov rsi, [r8]\n");
+            }
             printf("\txor rax, rax\n");
             printf("\tcall printf\n");
             printf("\tpop rbp\n");
@@ -138,148 +151,257 @@ int ex(nodeType *p)
                 printf("\tpush rdi\n");
                 break;
             case '-':
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rdi\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
                 }
-                printf("\tmov rsi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rsi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rsi, [r9]\n");
+                }
                 printf("\tsub rdi, rsi\n");
                 printf("\tpush rdi\n");
                 break;
             case '*':
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rax\n");
                 }
-                printf("\tmov rax, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rax, [r9]\n");
                 }
-                printf("\tmov rdi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rdi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
+                }
                 printf("\timul rdi\n");
                 printf("\tpush rax\n");
                 break;
             case '/':
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rdi\n");
                 }
-                printf("\tmov rax, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tidiv rdi\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rax\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rax, [r9]\n");
+                }
+                printf("\txor rdx, rdx\n");
+                printf("\tdiv rdi\n");
                 printf("\tpush rax\n");
                 break;
             case '<':
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rsi\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rsi, [r9]\n");
                 }
-                printf("\tmov rsi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rdi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
+                }
 
-                printf("\tmov r9, 0\n");
-                printf("\tmov r8, 1\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\tmov r8, 0\n");
+                printf("\tmov r9, 1\n");
                 printf("\tcmovl r9, r8\n");
-                printf("\ttest r9, r9\n");
+                printf("\txor r8, r9\n");
 
                 break;
             case '>':
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rsi\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rsi, [r9]\n");
                 }
-                printf("\tmov rsi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rdi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
+                }
 
-                printf("\tmov r9, 0\n");
-                printf("\tmov r8, 1\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\tmov r8, 0\n");
+                printf("\tmov r9, 1\n");
                 printf("\tcmovg r9, r8\n");
-                printf("\ttest r9, r9\n");
+                printf("\txor r8, r9\n");
 
                 break;
             case GE:
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rdi\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
                 }
-                printf("\tmov rsi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rsi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rsi, [r9]\n");
+                }
 
-                printf("\tmov r9, 0\n");
-                printf("\tmov r8, 1\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\tmov r8, 0\n");
+                printf("\tmov r9, 1\n");
                 printf("\tcmovge r9, r8\n");
-                printf("\ttest r9, r9\n");
+                printf("\txor r8, r9\n");
                 break;
             case LE:
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rdi\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
                 }
-                printf("\tmov rsi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rsi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rsi, [r9]\n");
+                }
 
-                printf("\tmov r9, 0\n");
-                printf("\tmov r8, 1\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\tmov r8, 0\n");
+                printf("\tmov r9, 1\n");
                 printf("\tcmovle r9, r8\n");
-                printf("\ttest r9, r9\n");
+                printf("\txor r8, r9\n");
                 break;
             case NE:
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rdi\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
                 }
-                printf("\tmov rsi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rsi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rsi, [r9]\n");
+                }
 
                 printf("\tmov r8, 0\n");
                 printf("\tmov r9, 1\n");
@@ -289,20 +411,34 @@ int ex(nodeType *p)
 
                 break;
             case EQ:
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
+                if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tadd r9, 8*%d\n", index[0]);
+                    printf("\tpop rdi\n");
                 }
-                printf("\tmov rdi, [r9]\n");
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[1] != 0)
+                else
                 {
-                    printf("\tadd r9, 8*%d\n", index[1]);
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
                 }
-                printf("\tmov rsi, [r9]\n");
+                if (p->opr.op[1]->type == typeCon)
+                {
+                    printf("\tpop rsi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[1] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[1]);
+                    }
+                    printf("\tmov rsi, [r9]\n");
+                }
 
-                printf("\ttest rdi, rsi\n");
+                printf("\tcmp rdi, rsi\n");
                 break;
             }
         }
