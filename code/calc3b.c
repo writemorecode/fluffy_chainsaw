@@ -17,7 +17,6 @@ int ex(nodeType *p)
         printf("\tpush\t%d\n", p->con.value);
         break;
     case typeId:
-        // printf("\tpush\t%c\n", p->id.i + 'a');
         break;
     case typeOpr:
         switch (p->opr.oper)
@@ -26,9 +25,7 @@ int ex(nodeType *p)
             printf("L%03d:\n", lbl1 = lbl++);
             ex(p->opr.op[0]);
             
-            // Replace with jnz?
-
-            printf("\tjz\tL%03d\n", lbl2 = lbl++);
+            printf("\tjnz\tL%03d\n", lbl2 = lbl++);
             ex(p->opr.op[1]);
             printf("\tjmp\tL%03d\n", lbl1);
             printf("L%03d:\n", lbl2);
@@ -38,7 +35,7 @@ int ex(nodeType *p)
             if (p->opr.nops > 2)
             {
                 /* if else */
-                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                printf("\tjnz\tL%03d\n", lbl1 = lbl++);
                 ex(p->opr.op[1]);
                 printf("\tjmp\tL%03d\n", lbl2 = lbl++);
                 printf("L%03d:\n", lbl1);
@@ -48,7 +45,7 @@ int ex(nodeType *p)
             else
             {
                 /* if */
-                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                printf("\tjnz\tL%03d\n", lbl1 = lbl++);
                 ex(p->opr.op[1]);
                 printf("L%03d:\n", lbl1);
             }
@@ -244,7 +241,7 @@ int ex(nodeType *p)
             case '<':
                 if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tpop rsi\n");
+                    printf("\tpop rdi\n");
                 }
                 else
                 {
@@ -253,11 +250,11 @@ int ex(nodeType *p)
                     {
                         printf("\tadd r9, 8*%d\n", index[0]);
                     }
-                    printf("\tmov rsi, [r9]\n");
+                    printf("\tmov rdi, [r9]\n");
                 }
                 if (p->opr.op[1]->type == typeCon)
                 {
-                    printf("\tpop rdi\n");
+                    printf("\tpop rsi\n");
                 }
                 else
                 {
@@ -266,11 +263,12 @@ int ex(nodeType *p)
                     {
                         printf("\tadd r9, 8*%d\n", index[1]);
                     }
-                    printf("\tmov rdi, [r9]\n");
+                    printf("\tmov rsi, [r9]\n");
                 }
 
                 printf("\tmov r8, 0\n");
                 printf("\tmov r9, 1\n");
+                printf("\tcmp rdi, rsi\n");
                 printf("\tcmovl r9, r8\n");
                 printf("\txor r8, r9\n");
 
@@ -278,7 +276,7 @@ int ex(nodeType *p)
             case '>':
                 if (p->opr.op[0]->type == typeCon)
                 {
-                    printf("\tpop rsi\n");
+                    printf("\tpop rdi\n");
                 }
                 else
                 {
@@ -287,11 +285,11 @@ int ex(nodeType *p)
                     {
                         printf("\tadd r9, 8*%d\n", index[0]);
                     }
-                    printf("\tmov rsi, [r9]\n");
+                    printf("\tmov rdi, [r9]\n");
                 }
                 if (p->opr.op[1]->type == typeCon)
                 {
-                    printf("\tpop rdi\n");
+                    printf("\tpop rsi\n");
                 }
                 else
                 {
@@ -300,7 +298,7 @@ int ex(nodeType *p)
                     {
                         printf("\tadd r9, 8*%d\n", index[1]);
                     }
-                    printf("\tmov rdi, [r9]\n");
+                    printf("\tmov rsi, [r9]\n");
                 }
 
                 printf("\tmov r8, 0\n");
@@ -339,6 +337,7 @@ int ex(nodeType *p)
 
                 printf("\tmov r8, 0\n");
                 printf("\tmov r9, 1\n");
+                printf("\tcmp rdi, rsi\n");
                 printf("\tcmovge r9, r8\n");
                 printf("\txor r8, r9\n");
                 break;
@@ -405,7 +404,7 @@ int ex(nodeType *p)
 
                 printf("\tmov r8, 0\n");
                 printf("\tmov r9, 1\n");
-                printf("\ttest rdi, rsi\n");
+                printf("\tcmp rdi, rsi\n");
                 printf("\tcmovne r8, r9\n");
                 printf("\txor r9, r8\n");
 
