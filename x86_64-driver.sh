@@ -26,5 +26,5 @@ echo -e "\tmov\trax, 60" >> "$NEW_NAME"
 echo -e "\tmov\trdi, 0" >> "$NEW_NAME"
 echo -e "\tsyscall" >> "$NEW_NAME"
 
-gcc -ggdb3 "$NEW_NAME" -o "$PROGRAM_NAME"
+gcc -L code/extras -ggdb3 "$NEW_NAME" -o "$PROGRAM_NAME" -lfactorial -llntwo -lgcd
 
