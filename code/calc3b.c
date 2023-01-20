@@ -372,6 +372,7 @@ int ex(nodeType *p)
 
                 printf("\tmov r8, 0\n");
                 printf("\tmov r9, 1\n");
+                printf("\tcmp rdi, rsi\n");
                 printf("\tcmovg r9, r8\n");
                 printf("\txor r8, r9\n");
 
