@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "calc3.h"
 #include "y.tab.h"
 
@@ -93,14 +94,20 @@ int ex(nodeType *p)
         case UMINUS:
             ex(p->opr.op[0]);
             index[0] = p->opr.op[0]->id.i;
-            printf("\tpop\tr8\n");
-            printf("\tlea r9, [rip+ARRAY]\n");
-            if (index[0] != 0)
+            if(p->opr.op[0]->type == typeCon)
             {
-                printf("\tadd r9, 8*%d\n", index[0]);
+                printf("\tpop\tr8\n");
+            }
+            else
+            {
+                printf("\tlea r9, [rip+ARRAY]\n");
+                if (index[0] != 0)
+                {
+                    printf("\tadd r9, 8*%d\n", index[0]);
+                }
+                printf("\tmov r8, [r9]\n");
             }
             printf("\tneg r8\n");
-            printf("\tmov [r9], r8\n");
             printf("\tpush r8\n");
             break;
         case FACT:
@@ -187,7 +194,7 @@ int ex(nodeType *p)
                 printf("\tpush rax\n");
                 break;
             case '+':
-                if (p->opr.op[0]->type == typeCon)
+                if (p->opr.op[0]->type == typeCon || p->opr.op[0]->type == typeOpr)
                 {
                     printf("\tpop rdi\n");
                 }
@@ -200,7 +207,7 @@ int ex(nodeType *p)
                     }
                     printf("\tmov rdi, [r9]\n");
                 }
-                if (p->opr.op[1]->type == typeCon)
+                if (p->opr.op[1]->type == typeCon || p->opr.op[1]->type == typeOpr)
                 {
                     printf("\tpop rsi\n");
                 }
@@ -217,20 +224,7 @@ int ex(nodeType *p)
                 printf("\tpush rdi\n");
                 break;
             case '-':
-                if (p->opr.op[0]->type == typeCon)
-                {
-                    printf("\tpop rdi\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[0] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[0]);
-                    }
-                    printf("\tmov rdi, [r9]\n");
-                }
-                if (p->opr.op[1]->type == typeCon)
+                if(p->opr.op[1]->type != typeId)
                 {
                     printf("\tpop rsi\n");
                 }
@@ -243,6 +237,21 @@ int ex(nodeType *p)
                     }
                     printf("\tmov rsi, [r9]\n");
                 }
+
+                if(p->opr.op[0]->type != typeId)
+                {
+                    printf("\tpop rdi\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
+                    printf("\tmov rdi, [r9]\n");
+                }
+
                 printf("\tsub rdi, rsi\n");
                 printf("\tpush rdi\n");
                 break;
@@ -277,22 +286,9 @@ int ex(nodeType *p)
                 printf("\tpush rax\n");
                 break;
             case '/':
-                if (p->opr.op[0]->type == typeCon)
+                if(p->opr.op[1]->type != typeId)
                 {
-                    printf("\tpop rdi\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[0] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[0]);
-                    }
-                    printf("\tmov rdi, [r9]\n");
-                }
-                if (p->opr.op[1]->type == typeCon)
-                {
-                    printf("\tpop rax\n");
+                    printf("\tpop rcx\n");
                 }
                 else
                 {
@@ -301,10 +297,25 @@ int ex(nodeType *p)
                     {
                         printf("\tadd r9, 8*%d\n", index[1]);
                     }
+                    printf("\tmov rcx, [r9]\n");
+                }
+
+                if(p->opr.op[0]->type != typeId)
+                {
+                    printf("\tpop rax\n");
+                }
+                else
+                {
+                    printf("\tlea r9, [rip+ARRAY]\n");
+                    if (index[0] != 0)
+                    {
+                        printf("\tadd r9, 8*%d\n", index[0]);
+                    }
                     printf("\tmov rax, [r9]\n");
                 }
+
                 printf("\txor rdx, rdx\n");
-                printf("\tdiv rdi\n");
+                printf("\tdiv rcx\n");
                 printf("\tpush rax\n");
                 break;
             case '<':
