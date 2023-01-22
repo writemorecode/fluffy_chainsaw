@@ -11,7 +11,7 @@ factorial:
 factorial_loop:
     // n! = n*(n-1)! , n>=0 , 0! = 1! = 1
     cmp     rdi, 1
-    je      factorial_end
+    jle      factorial_end
     imul    rdi
     dec     rdi
     jmp     factorial_loop
