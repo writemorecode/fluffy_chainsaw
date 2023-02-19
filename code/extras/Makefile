@@ -11,4 +11,5 @@ lib%.so: %.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 clean:
-	rm -f *.o *.so lntwo factorial gcd
+	rm -f *.o *.so
+
