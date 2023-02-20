@@ -81,24 +81,10 @@ int ex(nodeType *p)
             break;
         case FACT:
             ex(p->opr.op[0]);
-            if (p->opr.op[0]->type == typeCon)
-            {
-                printf("\tpop rdi\n");
-            }
-            else
-            {
-                index[0] = p->opr.op[0]->id.i;
-                printf("\tlea r8, [rip+ARRAY]\n");
-                if (index[0] != 0)
-                {
-                    printf("\tadd r8, 8*%d\n", index[0]);
-                }
-                printf("\tmov rdi, [r8]\n");
-            }
-            printf("\txor rax, rax\n");
-            printf("\tcall factorial\n");
-            printf("\tpush rax\n");
-
+            printf("\tpop\trdi\n");
+            printf("\txor\trax, rax\n");
+            printf("\tcall\tfactorial\n");
+            printf("\tpush\trax\n");
             break;
         case LNTWO:
             ex(p->opr.op[0]);
