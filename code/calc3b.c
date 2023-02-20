@@ -272,39 +272,12 @@ int ex(nodeType *p)
                 printf("\txor r8, r9\n");
                 break;
             case NE:
-                if (p->opr.op[0]->type == typeCon)
-                {
-                    printf("\tpop rdi\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[0] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[0]);
-                    }
-                    printf("\tmov rdi, [r9]\n");
-                }
-                if (p->opr.op[1]->type == typeCon)
-                {
-                    printf("\tpop rsi\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[1] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[1]);
-                    }
-                    printf("\tmov rsi, [r9]\n");
-                }
-
-                printf("\tmov r8, 0\n");
-                printf("\tmov r9, 1\n");
+                printf("\tpop\trdi\n");
+                printf("\tpop\trsi\n");
+                printf("\txor rcx, rcx\n");
                 printf("\tcmp rdi, rsi\n");
-                printf("\tcmovne r8, r9\n");
-                printf("\txor r9, r8\n");
-
+                printf("\tsetne\tcl\n");
+                printf("\tpush\trcx\n");
                 break;
             case EQ:
                 printf("\tpop\trdi\n");
