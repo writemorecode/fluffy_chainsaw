@@ -136,32 +136,8 @@ int ex(nodeType *p)
                 printf("\tpush rax\n");
                 break;
             case '+':
-                if (p->opr.op[0]->type == typeCon || p->opr.op[0]->type == typeOpr)
-                {
-                    printf("\tpop rdi\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[0] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[0]);
-                    }
-                    printf("\tmov rdi, [r9]\n");
-                }
-                if (p->opr.op[1]->type == typeCon || p->opr.op[1]->type == typeOpr)
-                {
-                    printf("\tpop rsi\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[1] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[1]);
-                    }
-                    printf("\tmov rsi, [r9]\n");
-                }
+                printf("\tpop\trdi\n");
+                printf("\tpop\trsi\n");
                 printf("\tadd rdi, rsi\n");
                 printf("\tpush rdi\n");
                 break;
