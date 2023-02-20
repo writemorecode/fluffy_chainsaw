@@ -58,27 +58,6 @@ int ex(nodeType *p)
             }
             break;
         case PRINT:
-            /*
-            if (p->opr.op[0]->type == typeCon || p->opr.op[0]->type == typeOpr)
-            {
-                printf("\tpop rsi\n");
-            }
-            else
-            {
-                index[0] = p->opr.op[0]->id.i;
-                printf("\tlea r8, [rip+ARRAY]\n");
-                if (index[0] != 0)
-                {
-                    printf("\tadd r8, 8*%d\n", index[0]);
-                }
-            }
-            printf("\tpush rbp\n");
-            printf("\tlea rdi, [rip+fmt_str]\n");
-            if (p->opr.op[0]->type != typeCon && p->opr.op[0]->type != typeOpr)
-            {
-                printf("\tmov rsi, [r8]\n");
-            }
-            */
             ex(p->opr.op[0]);
             printf("\tlea rdi, [rip+fmt_str]\n");
             printf("\tpop rsi\n");
@@ -96,21 +75,9 @@ int ex(nodeType *p)
         case UMINUS:
             ex(p->opr.op[0]);
             index[0] = p->opr.op[0]->id.i;
-            if(p->opr.op[0]->type == typeCon)
-            {
-                printf("\tpop\tr8\n");
-            }
-            else
-            {
-                printf("\tlea r9, [rip+ARRAY]\n");
-                if (index[0] != 0)
-                {
-                    printf("\tadd r9, 8*%d\n", index[0]);
-                }
-                printf("\tmov r8, [r9]\n");
-            }
-            printf("\tneg r8\n");
-            printf("\tpush r8\n");
+            printf("\tpop\trdi\n");
+            printf("\tneg\trdi\n");
+            printf("\tpush\trdi\n");
             break;
         case FACT:
             ex(p->opr.op[0]);
