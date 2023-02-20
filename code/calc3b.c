@@ -153,36 +153,10 @@ int ex(nodeType *p)
                 printf("\tpush rax\n");
                 break;
             case '/':
-                if(p->opr.op[1]->type != typeId)
-                {
-                    printf("\tpop rcx\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[1] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[1]);
-                    }
-                    printf("\tmov rcx, [r9]\n");
-                }
-
-                if(p->opr.op[0]->type != typeId)
-                {
-                    printf("\tpop rax\n");
-                }
-                else
-                {
-                    printf("\tlea r9, [rip+ARRAY]\n");
-                    if (index[0] != 0)
-                    {
-                        printf("\tadd r9, 8*%d\n", index[0]);
-                    }
-                    printf("\tmov rax, [r9]\n");
-                }
-
+                printf("\tpop\trdi\n");
+                printf("\tpop\trax\n");
                 printf("\txor rdx, rdx\n");
-                printf("\tdiv rcx\n");
+                printf("\tidiv rdi\n");
                 printf("\tpush rax\n");
                 break;
             case '<':
