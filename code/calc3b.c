@@ -60,12 +60,12 @@ int ex(nodeType *p)
             break;
         case PRINT:
             ex(p->opr.op[0]);
-            printf("\tlea rdi, [rip+fmt_str]\n");
-            printf("\tpop rsi\n");
-            printf("\txor rax, rax\n");
-            printf("\tpush rbp\n");
-            printf("\tcall printf\n");
-            printf("\tpop rbp\n");
+            printf("\tlea\trdi, [rip+fmt_str]\n");
+            printf("\tpop\trsi\n");
+            printf("\txor\trax, rax\n");
+            printf("\tpush\trbp\n");
+            printf("\tcall\tprintf\n");
+            printf("\tpop\trbp\n");
             break;
         case '=':
             ex(p->opr.op[1]);
@@ -102,81 +102,81 @@ int ex(nodeType *p)
             case GCD:
                 printf("\tpop\trdi\n");
                 printf("\tpop\trsi\n");
-                printf("\txor rax, rax\n");
-                printf("\tcall gcd\n");
-                printf("\tpush rax\n");
+                printf("\txor\trax, rax\n");
+                printf("\tcall\tgcd\n");
+                printf("\tpush\trax\n");
                 break;
             case '+':
                 printf("\tpop\trdi\n");
                 printf("\tpop\trsi\n");
-                printf("\tadd rdi, rsi\n");
-                printf("\tpush rdi\n");
+                printf("\tadd\trdi, rsi\n");
+                printf("\tpush\trdi\n");
                 break;
             case '-':
                 printf("\tpop\trdi\n");
                 printf("\tpop\trsi\n");
-                printf("\tsub rsi, rdi\n");
-                printf("\tpush rsi\n");
+                printf("\tsub\trsi, rdi\n");
+                printf("\tpush\trsi\n");
                 break;
             case '*':
                 printf("\tpop\trdi\n");
                 printf("\tpop\trax\n");
                 printf("\txor\trdx, rdx\n");
-                printf("\timul rdi\n");
-                printf("\tpush rax\n");
+                printf("\timul\trdi\n");
+                printf("\tpush\trax\n");
                 break;
             case '/':
                 printf("\tpop\trdi\n");
                 printf("\tpop\trax\n");
-                printf("\txor rdx, rdx\n");
-                printf("\tidiv rdi\n");
-                printf("\tpush rax\n");
+                printf("\txor\trdx, rdx\n");
+                printf("\tidiv\trdi\n");
+                printf("\tpush\trax\n");
                 break;
             case '<':
                 printf("\tpop\trsi\n");
                 printf("\tpop\trdi\n");
-                printf("\txor rcx, rcx\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\txor\trcx, rcx\n");
+                printf("\tcmp\trdi, rsi\n");
                 printf("\tsetl\tcl\n");
                 printf("\tpush\trcx\n");
                 break;
             case '>':
                 printf("\tpop\trsi\n");
                 printf("\tpop\trdi\n");
-                printf("\txor rcx, rcx\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\txor\trcx, rcx\n");
+                printf("\tcmp\trdi, rsi\n");
                 printf("\tsetg\tcl\n");
                 printf("\tpush\trcx\n");
                 break;
             case GE:
                 printf("\tpop\trsi\n");
                 printf("\tpop\trdi\n");
-                printf("\txor rcx, rcx\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\txor\trcx, rcx\n");
+                printf("\tcmp\trdi, rsi\n");
                 printf("\tsetge\tcl\n");
                 printf("\tpush\trcx\n");
                 break;
             case LE:
                 printf("\tpop\trsi\n");
                 printf("\tpop\trdi\n");
-                printf("\txor rcx, rcx\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\txor\trcx, rcx\n");
+                printf("\tcmp\trdi, rsi\n");
                 printf("\tsetle\tcl\n");
                 printf("\tpush\trcx\n");
                 break;
             case NE:
                 printf("\tpop\trdi\n");
                 printf("\tpop\trsi\n");
-                printf("\txor rcx, rcx\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\txor\trcx, rcx\n");
+                printf("\tcmp\trdi, rsi\n");
                 printf("\tsetne\tcl\n");
                 printf("\tpush\trcx\n");
                 break;
             case EQ:
                 printf("\tpop\trdi\n");
                 printf("\tpop\trsi\n");
-                printf("\txor rcx, rcx\n");
-                printf("\tcmp rdi, rsi\n");
+                printf("\txor\trcx, rcx\n");
+                printf("\tcmp\trdi, rsi\n");
                 printf("\tsete\tcl\n");
                 printf("\tpush\trcx\n");
                 break;
