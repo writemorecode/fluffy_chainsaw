@@ -60,12 +60,8 @@ int ex(nodeType *p)
             break;
         case PRINT:
             ex(p->opr.op[0]);
-            printf("\tlea\trdi, [rip+fmt_str]\n");
-            printf("\tpop\trsi\n");
-            printf("\txor\trax, rax\n");
-            printf("\tpush\trbp\n");
-            printf("\tcall\tprintf\n");
-            printf("\tpop\trbp\n");
+            printf("\tpop\trdi\n");
+            printf("\tcall\tprint\n");
             break;
         case '=':
             ex(p->opr.op[1]);

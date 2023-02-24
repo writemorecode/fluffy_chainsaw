@@ -17,5 +17,5 @@ cat code/header.s > "$NEW_NAME"
 
 cat code/footer.s >> "$NEW_NAME"
 
-gcc -L code/extras -ggdb3 "$NEW_NAME" -o "$PROGRAM_NAME" -lfactorial -llntwo -lgcd
+gcc -L code/extras -ggdb3 "$NEW_NAME" -o "$PROGRAM_NAME" -lfactorial -llntwo -lgcd -lprint
 
