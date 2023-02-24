@@ -13,7 +13,7 @@ touch "$NEW_NAME"
 
 cat code/header.s > "$NEW_NAME"
 
-./code/calc3b.exe < "$1" >> "$NEW_NAME"
+./code/calc3i.exe < "$1" >> "$NEW_NAME"
 
 cat code/footer.s >> "$NEW_NAME"
 
