@@ -1,5 +1,5 @@
-# PROGRAM EXIT
-mov     rax, 60
-xor     rdi, rdi
-syscall
+
+        mov     rax, 60
+        xor     rdi, rdi
+        syscall
 
