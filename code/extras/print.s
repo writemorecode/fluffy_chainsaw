@@ -12,7 +12,7 @@ reverse_string_start:
     
     xor rdx, rdx
     mov dl, BYTE PTR [rax]
-    cmp dl, 0x2d
+    cmp dl, '-'
     jne reverse_string_loop
     inc rax
     jmp reverse_string_loop
@@ -30,7 +30,7 @@ reverse_string_loop:
 
 print_end:
         // Add a newline at the end
-        mov BYTE PTR [r8 + rcx], 0xa
+        mov BYTE PTR [r8 + rcx], '\n'
         inc rcx
 
         // Call write
@@ -47,7 +47,7 @@ print_loop:
         div rbx
 
         // Convert digit to ASCII char
-        add dl, 0x30
+        add dl, '0'
         mov BYTE PTR [r8 + rcx], dl
         inc rcx
 
@@ -64,7 +64,7 @@ print:
 
         cmp rax, 0
         jge print_loop
-        mov BYTE PTR [r8 + rcx], 0x2d
+        mov BYTE PTR [r8 + rcx], '-'
         neg rax
         inc rcx
         jmp print_loop
