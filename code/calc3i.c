@@ -31,8 +31,9 @@ int ex(nodeType *p)
         case WHILE:
             printf("L%03d:\n", lbl1 = lbl++);
             ex(p->opr.op[0]);
-
-            printf("\tjnz\tL%03d\n", lbl2 = lbl++);
+            printf("\tpop\trcx\n");
+            printf("\ttest\trcx, rcx\n");
+            printf("\tjz\tL%03d\n", lbl2 = lbl++);
             ex(p->opr.op[1]);
             printf("\tjmp\tL%03d\n", lbl1);
             printf("L%03d:\n", lbl2);
