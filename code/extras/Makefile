@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -fPIC 
 LDFLAGS = -shared
 
-all: libfactorial.so libgcd.so liblntwo.so libprint.so
+all: libfactorial.so libgcd.so liblntwo.so libprint.so libstack.so
 
 %.o: %.s
 	as -o $@ $^ 
