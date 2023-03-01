@@ -42,7 +42,7 @@ int ex(nodeType *p)
                 /* if else */
                 printf("\tif (!stack_pop(stack)) { goto L%03d; }\n", lbl1 = lbl++);
                 ex(p->opr.op[1]);
-                printf("\tgoto L%03d\n", lbl2 = lbl++);
+                printf("\tgoto L%03d;\n", lbl2 = lbl++);
                 printf("L%03d:\n", lbl1);
                 ex(p->opr.op[2]);
                 printf("L%03d:\n", lbl2);
