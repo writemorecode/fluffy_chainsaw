@@ -53,5 +53,4 @@ dkms.conf
 
 .vscode/*
 *.pdf
-testprogs/*
 check_lab3_students/*
