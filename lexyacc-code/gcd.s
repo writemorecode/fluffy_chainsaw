@@ -6,14 +6,14 @@ gcd:
     mov rax, rdi
     jmp loop
 
-g:
+foo:
     sub     rax, rsi
     jmp loop
 
 loop:
     cmp     rax, rsi
     je      gcd_end
-    jg      g 
+    jg      foo 
     sub     rsi, rax
     jmp     loop
 

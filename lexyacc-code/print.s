@@ -1,6 +1,6 @@
 .intel_syntax noprefix
 .data
-        s: .zero 32
+        str: .zero 32
 .text
 .global print
 
@@ -59,7 +59,7 @@ print_loop:
 print:
         mov rax, rdi
         mov rbx, 10
-        lea r8, [rip + s]
+        lea r8, [rip + str]
         xor rcx, rcx
 
         cmp rax, 0
