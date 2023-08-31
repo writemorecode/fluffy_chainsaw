@@ -54,3 +54,6 @@ dkms.conf
 .vscode/*
 *.pdf
 check_lab3_students/*
+y.tab.h
+y.tab.c
+lex.yy.c
