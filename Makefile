@@ -12,7 +12,7 @@ setup:
 clean:
 	rm -f bin/* lib/* obj/*
 
-SRCDIR = src
+SRCDIR = lexyacc-code
 OBJDIR = obj
 LIBDIR = lib
 SOURCES = $(shell find $(SRCDIR) -type f -name "*.s")

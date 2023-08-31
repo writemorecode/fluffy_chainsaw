@@ -3,9 +3,9 @@
 #include "calc3.h"
 #include "y.tab.h"
 
-#include "extras/factorial.h"
-#include "extras/gcd.h"
-#include "extras/lntwo.h"
+#include "factorial.h"
+#include "gcd.h"
+#include "lntwo.h"
 
 static int lbl;
 
