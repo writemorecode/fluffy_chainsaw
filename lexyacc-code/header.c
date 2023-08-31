@@ -1,8 +1,8 @@
-#include "code/extras/stack.h"
-#include "code/extras/print.h"
-#include "code/extras/factorial.h"
-#include "code/extras/gcd.h"
-#include "code/extras/lntwo.h"
+#include "lexyacc-code/stack.h"
+#include "lexyacc-code/print.h"
+#include "lexyacc-code/factorial.h"
+#include "lexyacc-code/gcd.h"
+#include "lexyacc-code/lntwo.h"
 
 stack_t *stack;
 int64_t r0, r1;

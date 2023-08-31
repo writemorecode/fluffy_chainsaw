@@ -13,11 +13,11 @@ PROGRAM_NAME=$(echo "${BASENAME}" | cut -d '.' -f1)
 NEW_NAME="${PROGRAM_NAME}.c"
 touch "${NEW_NAME}"
 
-cat code/header.c > "${NEW_NAME}"
+cat lexyacc-code/header.c > "${NEW_NAME}"
 
-./code/calc3c.exe < "$1" >> "${NEW_NAME}"
+bin/calc3c.exe < "$1" >> "${NEW_NAME}"
 
-cat code/footer.c >> "${NEW_NAME}"
+cat lexyacc-code/footer.c >> "${NEW_NAME}"
 
-gcc -L code/extras -O2 -ggdb3 "${NEW_NAME}" -o "${PROGRAM_NAME}" -lfactorial -llntwo -lgcd -lprint -lstack
+gcc -L lib/ -O2 "${NEW_NAME}" obj/stack.o -o "${PROGRAM_NAME}" -lfunctions
 
